@@ -30,7 +30,7 @@ RUN conda
 RUN conda create -n myenv python=3.7.2 
 RUN activate myenv
 
-RUN pip install --user flair==0.7.0
+RUN pip install --user flair==0.7.0 torch==1.4.0
 
 COPY . /app
 WORKDIR /app
