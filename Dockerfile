@@ -28,12 +28,21 @@ COPY . /app
 WORKDIR /app
 
 
-
-RUN conda
 RUN conda create -n myenv python=3.7.2 
-RUN activate myenv
-RUN python --version 
-RUN python3 --version
+
+# Make RUN commands use the new environment:
+SHELL ["conda", "run", "-n", "myenv", "/bin/bash", "-c"]
+
+# Demonstrate the environment is activated:
+# RUN echo "Make sure flask is installed:"
+
+
+
+# RUN conda
+# RUN conda create -n 
+# RUN activate myenv
+# RUN python --version 
+# RUN python3 --version
 
 RUN pip install --user flair==0.7.0 torch==1.4.0
 
@@ -42,4 +51,4 @@ RUN ls
 RUN chmod +x /app/example.sh
 RUN pip freeze
 
-CMD ./example.sh
+ENTRYPOINT ["conda", "run", "--no-capture-output", "-n", "myenv", "./example.sh"]

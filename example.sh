@@ -1,4 +1,4 @@
-conda activate myenv
+activate myenv
 export CONLL03_TRAIN_FILE=data/data/train.txt
 export CONLL03_DEV_FILE=data/data/dev.txt
 export CONLL03_TEST_FILE=data/data/test.txt
