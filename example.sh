@@ -1,3 +1,4 @@
+conda activate myenv
 export CONLL03_TRAIN_FILE=data/data/train.txt
 export CONLL03_DEV_FILE=data/data/dev.txt
 export CONLL03_TEST_FILE=data/data/test.txt
@@ -15,7 +16,7 @@ python3
 for splits in $(seq 1 1 3); do
     SPLIT_FOLDER=${DATA_FOLDER_PREFIX}/split-${splits}
     echo "------ INSIDE SPLITS ---- ${splits} ------"
-    python3 split.py --input_files ${CONLL03_TRAIN_FILE} ${CONLL03_DEV_FILE} \
+    python split.py --input_files ${CONLL03_TRAIN_FILE} ${CONLL03_DEV_FILE} \
                     --output_folder ${SPLIT_FOLDER} \
                     --schema iob \
 		    --folds 10
@@ -26,20 +27,20 @@ for splits in $(seq 1 1 3); do
     for folds in $(seq 0 1 9); do
         echo "------ INSIDE SPLITS ---- ${splits} ------${folds}----"
         FOLD_FOLDER=split-${splits}/fold-${folds}
-        python3 flair_scripts/flair_ner.py --folder_name ${FOLD_FOLDER} \
+        python flair_scripts/flair_ner.py --folder_name ${FOLD_FOLDER} \
                                           --data_folder_prefix ${DATA_FOLDER_PREFIX} \
                                           --model_folder_prefix ${MODEL_FOLDER_PREFIX}
     done
 done
 
 # collecting results and forming a weighted train set.
-python3 collect.py --split_folders ${DATA_FOLDER_PREFIX}/split-*  \
+python collect.py --split_folders ${DATA_FOLDER_PREFIX}/split-*  \
                   --train_files $CONLL03_TRAIN_FILE $CONLL03_DEV_FILE \
                   --train_file_schema iob \
                   --output ${DATA_FOLDER_PREFIX}/${WEIGHED_MODEL_FOLDER_NAME}/train.bio
 
 # train the final model
-python3 flair_scripts/flair_ner.py --folder_name ${WEIGHED_MODEL_FOLDER_NAME} \
+python flair_scripts/flair_ner.py --folder_name ${WEIGHED_MODEL_FOLDER_NAME} \
                                   --data_folder_prefix ${DATA_FOLDER_PREFIX} \
                                   --model_folder_prefix ${MODEL_FOLDER_PREFIX} \
                                   --include_weight

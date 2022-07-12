@@ -24,17 +24,22 @@ FROM nvcr.io/nvidia/pytorch:22.06-py3
 #     ln -s /opt/conda/etc/profile.d/conda.sh /etc/profile.d/conda.sh && \
 #     echo “. /opt/conda/etc/profile.d/conda.sh” >> ~/.bashrc && \
 #     echo “conda activate base” >> ~/.bashrc
+COPY . /app
+WORKDIR /app
+
 
 
 RUN conda
 RUN conda create -n myenv python=3.7.2 
 RUN activate myenv
+RUN python --version 
+RUN python3 --version
 
 RUN pip install --user flair==0.7.0 torch==1.4.0
 
-COPY . /app
-WORKDIR /app
 
 RUN ls
 RUN chmod +x /app/example.sh
+RUN pip freeze
+
 CMD ./example.sh
