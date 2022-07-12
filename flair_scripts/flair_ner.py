@@ -59,7 +59,7 @@ tagger: SequenceTagger = WeightedSequenceTagger(hidden_size=256,
 trainer: ModelTrainer = ModelTrainer(tagger, corpus)
 # 20 
 trainer.train(model_folder,
-              max_epochs=150,
+              max_epochs=3,
               monitor_test=True,
               train_with_dev=True)
 
