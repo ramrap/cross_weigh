@@ -45,10 +45,12 @@ SHELL ["conda", "run", "-n", "myenv", "/bin/bash", "-c"]
 # RUN python3 --version
 
 RUN pip install --user flair==0.7.0 torch==1.4.0
+RUN pip install torch --upgrade
+RUN pip install torchvision --upgrade
 
 
 RUN ls
 RUN chmod +x /app/example.sh
 RUN pip freeze
 
-ENTRYPOINT ["conda", "run", "--no-capture-output", "-n", "myenv", "./example.sh"]
+CMD ./example.sh

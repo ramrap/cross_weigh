@@ -8,6 +8,9 @@ import argparse
 import os
 from sequence_tagger_with_weights import WeightedSequenceTagger
 
+import flair, torch
+flair.device = torch.device('cuda:2')
+
 parser = argparse.ArgumentParser()
 parser.add_argument('--folder_name', required=True)
 parser.add_argument('--include_weight', action='store_true')
@@ -61,7 +64,9 @@ trainer: ModelTrainer = ModelTrainer(tagger, corpus)
 trainer.train(model_folder,
               max_epochs=3,
               monitor_test=True,
-              train_with_dev=True)
+              train_with_dev=True,
+              embeddings_storage_mode='gpu'
+              )
 
 
 def get_tokens_and_labels(sentence):
